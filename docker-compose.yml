@@ -1,0 +1,40 @@
+version: '2'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+    stdin_open: true 
+    tty: true  
+    volumes:
+      - ./data/db:/data/db
+  ui:
+    build: ./ui
+    volumes:
+      - ./ui:/usr/src/app/ui
+      - /usr/src/app/ui/node_modules
+    ports:
+      - '80:80'
+    depends_on:
+      - api
+    stdin_open: true 
+    tty: true
+  api:
+    build: ./api
+    volumes:
+      - ./ui:/usr/src/app/api
+      - /usr/src/app/api/node_modules
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mongo
+    stdin_open: true 
+    tty: true  
+
+    command: bash -c "/usr/src/app/wait-for-it.sh --timeout=0 mongo:27017 && npm run dev"
+    environment:
+      - WAIT_HOSTS=mongodb:27017
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+  
