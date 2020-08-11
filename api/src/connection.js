@@ -4,9 +4,9 @@ const User = require("./User.model");
 
 mongoose.Promise = global.Promise;
  
- 
-const connection = "mongodb://srv-captain--mongo:27017/mongo-test";	
+const connection = "mongodb://root:Test345@srv-captain--mongo:27017/mongo-test";	
 
+/*
 const connectDb = () => {	
   return mongoose.connect(connection,{ useNewUrlParser: true });	  
 };
@@ -17,4 +17,14 @@ db.once('open', function() {
   console.log('connected')
 });
 
+
+
 module.exports = connectDb;
+*/
+
+
+var test = async function () {
+  return mongoose.connect(connection,{ useNewUrlParser: true });	  
+}
+
+module.exports = test;
